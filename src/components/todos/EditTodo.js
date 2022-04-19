@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDocumnetTitle } from '../../helpers/setDocumentTitle';
 import { cleanEditable, editTodo } from '../../redux/reducers/todoSlice';
 
 const EditTodo = () => {
-    const navigate = useNavigate();
     const { id } = useParams();
+
+    useDocumnetTitle(`edit - ${id}`)
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { editable } = useSelector(state => state.todo);
