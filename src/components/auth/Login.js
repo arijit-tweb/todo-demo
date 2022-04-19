@@ -7,6 +7,7 @@ import { useDocumnetTitle } from '../../helpers/setDocumentTitle';
 
 const Login = () => {
 
+  // custom hook for page name 
   useDocumnetTitle("login");
 
   const location = useLocation();
