@@ -7,11 +7,11 @@ import AuthModal from './AuthModal';
 
 const Signup = () => {
 
-  useDocumnetTitle("sign up")
+  useDocumnetTitle("sign up");
 
   const navigate = useNavigate();
 
-  const {signupData} = useSelector(state => state.user);
+  const {signupData, auth} = useSelector(state => state.user);
 
   const dispatch = useDispatch();
 
@@ -24,6 +24,13 @@ const Signup = () => {
     e.preventDefault();
     dispatch(signupUser(signupDetails));
   }
+
+  useEffect(()=>{
+    if(auth){
+      navigate('/');
+      return
+    }
+  },[auth])
 
   useEffect(()=>{
     if(signupData.token){

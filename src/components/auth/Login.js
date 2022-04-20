@@ -29,7 +29,17 @@ const Login = () => {
 
   useEffect(()=>{
     // console.log(location);
-    if(loginToken.token){
+    const token_ = localStorage.getItem('token');
+
+    if(token_){
+      navigate(fromLocation, {replace: true});
+      return
+    }
+
+    if(loginToken?.token){
+    //  const {name, index} = location.state;
+    // here i can dispatch the same changeLikeDisLike to change the data 
+
       localStorage.setItem('token', loginToken.token);
       navigate(fromLocation, {replace: true});
     }

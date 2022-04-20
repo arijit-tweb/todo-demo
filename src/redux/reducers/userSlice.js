@@ -31,19 +31,24 @@ export const userSlice = createSlice({
     initialState: {
         loginToken: {},
         signupData: {},
-        errorData: {}
+        errorData: {},
+        auth: false
     },
     reducers: {
         logout: (state) => {
             state.loginToken = {};
             state.errorData = {}
+        },
+        setAuth: (state, {payload})=>{
+            state.auth = payload;
         }
     },
     extraReducers: {
         [loginUser.fulfilled]: (state, { payload }) => {
             return {
                 ...state,
-                loginToken: payload.data
+                loginToken: payload.data,
+                auth: true
             }
         },
         [loginUser.rejected]: (state) => {
@@ -63,4 +68,4 @@ export const userSlice = createSlice({
     }
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, setAuth } = userSlice.actions;
