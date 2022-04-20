@@ -7,7 +7,7 @@ import { useDocumnetTitle } from '../../helpers/setDocumentTitle';
 
 const Login = () => {
 
-  // custom hook for page name 
+  // custom hook for page title 
   useDocumnetTitle("login");
 
   const location = useLocation();
@@ -29,9 +29,7 @@ const Login = () => {
 
   useEffect(()=>{
     // console.log(location);
-    console.log('hii');
     if(loginToken.token){
-      console.log('hello');
       localStorage.setItem('token', loginToken.token);
       navigate(fromLocation, {replace: true});
     }
