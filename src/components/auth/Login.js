@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../redux/reducers/userSlice';
 import AuthModal from './AuthModal';
-import { useNavigate, useLocation} from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDocumnetTitle } from '../../helpers/setDocumentTitle';
 
 const Login = () => {
@@ -10,11 +10,15 @@ const Login = () => {
   // custom hook for page title 
   useDocumnetTitle("login");
 
+  const [params] = useSearchParams();
+  const paramId = params.get('todoId')
+
   const location = useLocation();
+  // console.log(location);
   const navigate = useNavigate();
   const fromLocation = location.state?.from?.pathname || '/';
 
-  const {loginToken} = useSelector(state => state.user);
+  const { loginToken } = useSelector(state => state.user);
 
   const dispatch = useDispatch();
   const [loginDetails, setLoginDetails] = useState({
@@ -22,32 +26,34 @@ const Login = () => {
     password: "cityslicka"
   });
 
-  const fromSubmit = (e)=>{
+  const fromSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(loginDetails));
   }
 
-  useEffect(()=>{
-    // console.log(location);
+  useEffect(() => {
     const token_ = localStorage.getItem('token');
-
-    if(token_){
-      navigate(fromLocation, {replace: true});
-      return
+    if (token_) {
+      navigate(fromLocation, { replace: true });
     }
+  }, []);
 
-    if(loginToken?.token){
-    //  const {name, index} = location.state;
-    // here i can dispatch the same changeLikeDisLike to change the data 
-
+  useEffect(() => {
+    if (loginToken?.token) {
       localStorage.setItem('token', loginToken.token);
-      navigate(fromLocation, {replace: true});
+      
+      if (paramId) {
+        navigate(`${fromLocation}?todoId=${paramId}`, { state: {type: location.state?.type}, replace: true });
+        return
+      }
+
+      navigate(fromLocation, { replace: true });
     }
   }, [loginToken])
 
   return (
     <>
-      <AuthModal details={loginDetails} setDetails={setLoginDetails} fromSubmit={fromSubmit} name="Log in"/>
+      <AuthModal details={loginDetails} setDetails={setLoginDetails} fromSubmit={fromSubmit} name="Log in" />
     </>
   )
 }

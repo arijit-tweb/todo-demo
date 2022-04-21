@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { AiFillDelete } from 'react-icons/ai'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -11,26 +11,27 @@ const PerTodo = ({ elem, index }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {auth} = useSelector(state => state.user);
+    const { auth } = useSelector(state => state.user);
 
     const dispatch = useDispatch();
 
-    const deleteClick = ()=>{
+    const deleteClick = () => {
         dispatch(deleteTodo(index));
     };
 
-    const setLikeDislike = (e) => {
-        if(!auth){
-            return navigate('/login', {state: {
-                from: location,
-                name: e.target.id,
-                index: index
-            }});
+    const setLikeDislike = (type, id) => {
+        if (!auth) {
+            return navigate(`/login?todoId=${id}`, {
+                state: {
+                    from: location,
+                    type
+                }
+            });
         }
 
         dispatch(changeLikeDisLike({
-            name: e.target.id,
-            index: index
+            name: type,
+            index: id - 1
         }))
     };
 
@@ -44,11 +45,11 @@ const PerTodo = ({ elem, index }) => {
                         </Link>
                     </div>
                     <div className="cursor-pointer" onClick={deleteClick}><AiFillDelete color="red" size={20} /></div>
-                    <div className="cursor-pointer" id="like" onClick={setLikeDislike}>
+                    <div className="cursor-pointer" id="like" onClick={() => setLikeDislike('like', elem.id)}>
                         Like: {auth ? like.length : null}
                     </div>
-                    <div className="cursor-pointer" id="dislike" onClick={setLikeDislike}>
-                        disLike: {auth ? dislike.length: null}
+                    <div className="cursor-pointer" id="dislike" onClick={() => setLikeDislike('dislike', elem.id)}>
+                        disLike: {auth ? dislike.length : null}
                     </div>
                 </div>
                 <p>{title}</p>

@@ -10,6 +10,7 @@ import ProtectedRoute from './components/route/ProtectedRoute';
 import EditTodo from './components/todos/EditTodo';
 import Todo from './components/todos/Todo';
 import { setAuth } from './redux/reducers/userSlice';
+import Multiplex from './components/multiplex/Multiplex';
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/todo" element={<Todo/>}/>
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/multiplex" element={<Multiplex/>}/>
           <Route exact
             path="/todo/edit/:id"
             element={

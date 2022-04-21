@@ -1,19 +1,41 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import { useDocumnetTitle } from '../../helpers/setDocumentTitle';
-import { fetchTodos } from '../../redux/reducers/todoSlice';
+import { changeLikeDisLike, fetchTodos } from '../../redux/reducers/todoSlice';
 import PerTodo from './PerTodo';
 
 const Todo = () => {
-    useDocumnetTitle('home');
+    useDocumnetTitle('todo');
 
     const dispatch = useDispatch();
+
+    // const ref = useRef(true);
+
+    const [params] = useSearchParams();
+    const paramId = params.get('todoId');
+
+    const location = useLocation();
+    // console.log(location);
+
     const { todoList } = useSelector(state => state.todo);
 
     useEffect(() => {
         dispatch(fetchTodos());
-    }, [dispatch])
+    }, []);
 
+    useEffect(() => {
+        if (paramId) {
+            const id = Number(paramId);
+            dispatch(changeLikeDisLike({
+                name: location.state?.type,
+                index: id - 1
+            }));
+            const updatedUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+        };
+        // setParams();
+    }, [todoList])
     return (
         <>
             <div className="container px-4">
