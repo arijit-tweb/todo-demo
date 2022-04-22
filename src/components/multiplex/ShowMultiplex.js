@@ -24,7 +24,7 @@ const ShowMultiplex = () => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 
-                    {
+                    {/* {
                         value.length !== 0 && value.map((e, i) => {
                             return <div className="w-full max-w-xs m-auto py-4" key={i}>
                                 <p>Multiplex Name : {e.name}</p>
@@ -38,7 +38,7 @@ const ShowMultiplex = () => {
                                 }
                             </div>
                         })
-                    }
+                    } */}
                 </div>
             </div>
         </>
