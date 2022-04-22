@@ -31,7 +31,7 @@ const ShowMultiplex = () => {
                                 {
                                     e.screen.map((elem, index) => {
                                         return <div className="flex gap-3" key={index}>
-                                            <p>Screen : {elem.screen}</p>
+                                            <p>Screen : {elem.screen}</p> |
                                             <p>Seat Type: {elem.seat}</p>
                                         </div>
                                     })

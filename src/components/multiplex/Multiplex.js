@@ -56,9 +56,8 @@ const Multiplex = () => {
 
     const deleteMultiplex = (id) => {
         let _multiplex = [...multiplexValue];
-        let index = _multiplex.findIndex(e => e.id === id);
-        _multiplex.splice(index, 1);
-        setMultiplexValue(_multiplex);
+        let filteredArr = _multiplex.filter(e => e.id !== id);
+        setMultiplexValue(filteredArr);
     }
 
     const addAll = () => {
