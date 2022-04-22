@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.addText{
+    top: -.3rem;
+    margin-right: 3px;
+}

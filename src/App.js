@@ -1,4 +1,4 @@
-import NotFound  from './components/NotFound';
+import NotFound from './components/NotFound';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -11,13 +11,14 @@ import EditTodo from './components/todos/EditTodo';
 import Todo from './components/todos/Todo';
 import { setAuth } from './redux/reducers/userSlice';
 import Multiplex from './components/multiplex/Multiplex';
+import ShowMultiplex from './components/multiplex/ShowMultiplex';
 
 function App() {
 
   const dispatch = useDispatch();
-  useEffect(()=>{
+  useEffect(() => {
     const token_ = localStorage.getItem('token');
-    if(token_){
+    if (token_) {
       dispatch(setAuth(true));
     }
   }, []);
@@ -28,10 +29,11 @@ function App() {
         <Header />
         <Routes>
           <Route exact path="/" element={<Dasboard />} />
-          <Route exact path="/todo" element={<Todo/>}/>
+          <Route exact path="/todo" element={<Todo />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/multiplex" element={<Multiplex/>}/>
+          <Route exact path="/multiplex" element={<Multiplex />}/>
+          <Route exact path="/multiplex/show" element={<ShowMultiplex/>}/>
           <Route exact
             path="/todo/edit/:id"
             element={
@@ -40,7 +42,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="*" element={<NotFound/>}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </>
