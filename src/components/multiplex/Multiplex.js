@@ -62,9 +62,9 @@ const Multiplex = () => {
         let _multiplex = [...multiplexValue];
         let index = _multiplex.findIndex(e => e.id === id);
         let screenIndex = _multiplex[index].screen.findIndex(e => e.screenId === screenId);
-        _multiplex[index].screen.forEach((elem, ind)=>{
-            if(ind === screenIndex){
-                elem.seat = [...elem.seat,{
+        _multiplex[index].screen.forEach((elem, ind) => {
+            if (ind === screenIndex) {
+                elem.seat = [...elem.seat, {
                     ...seatType, seatId: uniqid()
                 }]
             }
@@ -72,7 +72,7 @@ const Multiplex = () => {
         setMultiplexValue(_multiplex)
     };
 
-    const deleteSeat = (id, screenId, seatId)=>{
+    const deleteSeat = (id, screenId, seatId) => {
         let _multiplex = [...multiplexValue];
         let index = _multiplex.findIndex(e => e.id === id);
         let screenIndex = _multiplex[index].screen.findIndex(e => e.screenId === screenId);
@@ -82,8 +82,55 @@ const Multiplex = () => {
         setMultiplexValue(_multiplex);
     }
 
-   
+    // const multiplexNameChange = (event, id) => {
+    //     let _multiplex = [...multiplexValue];
+    //     let index = _multiplex.findIndex(e => e.id === id);
+    //     _multiplex[index][event.target.name] = event.target.value;
+    //     setMultiplexValue(_multiplex);
+    // };
 
+    // const screenChange = (event, id, screenId)=>{
+    //     let _multiplex = [...multiplexValue];
+    //     let index = _multiplex.findIndex(e => e.id === id);
+    //     let screenIndex = _multiplex[index].screen.findIndex(e => e.screenId === screenId);
+    //     _multiplex[index].screen[screenIndex][event.target.name] = event.target.value;
+    //     setMultiplexValue(_multiplex);
+    // }
+
+    // const seatChange = (event,id,screenId, seatId)=>{
+    //     let _multiplex = [...multiplexValue];
+    //     let index = _multiplex.findIndex(e => e.id === id);
+    //     let screenIndex = _multiplex[index].screen.findIndex(e => e.screenId === screenId);
+    //     let seatIndex = _multiplex[index].screen[screenIndex].seat.findIndex(e => e.seatId === seatId);
+    //     _multiplex[index].screen[screenIndex].seat[seatIndex][event.target.name] = event.target.value;
+    //     setMultiplexValue(_multiplex);
+    // }
+
+    const inputChange = (event, id,  name, screenId = '', seatId = '' )=>{
+        let index, screenIndex, seatIndex;
+        let _multiplex = [...multiplexValue];
+        index = _multiplex.findIndex(e => e.id === id);
+        if(screenId !== ''){
+            screenIndex = _multiplex[index].screen.findIndex(e => e.screenId === screenId);
+        };
+        if(seatId !== ''){
+            seatIndex = _multiplex[index].screen[screenIndex].seat.findIndex(e => e.seatId === seatId);
+        };
+        if(name === 'multiplex'){
+            _multiplex[index][event.target.name] = event.target.value;
+        }
+        if(name === 'screen'){
+            _multiplex[index].screen[screenIndex][event.target.name] = event.target.value;
+        }
+        if(name === 'seat'){
+            _multiplex[index].screen[screenIndex].seat[seatIndex][event.target.name] = event.target.value;
+        }
+        setMultiplexValue(_multiplex);
+    }
+
+    const addAll = () => {
+        console.log(multiplexValue);
+    };
 
     return (
         <>
@@ -104,7 +151,9 @@ const Multiplex = () => {
                                     <div className="flex justify-between">
                                         <input className="shadow appearance-none border rounded mb-3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Multiplex Name"
                                             name="name"
-                                            
+                                            value={e.name}
+                                            // onChange={(event)=> multiplexNameChange(event, e.id)}
+                                            onChange={(event)=> inputChange(event, e.id, 'multiplex')}
                                         />
                                         <div className="flex gap-5 cursor-pointer">
                                             <div onClick={addmultiplexClick}>
@@ -129,42 +178,50 @@ const Multiplex = () => {
                                                     <div>
                                                         <input className="shadow appearance-none border mb-3 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Screen"
                                                             name="screen"
-                                                        
+                                                            value={elem.screen}
+                                                            // onChange={(event)=>screenChange(event,e.id, elem.screenId)}
+                                                            onChange={(event)=> inputChange(event, e.id, 'screen', elem.screenId)}
                                                         />
                                                     </div>
                                                     <div className="flex gap-5 cursor-pointer">
                                                         <div onClick={() => screenAdd(e.id)}>
-                                                            <span><BsPlusLg color="blue"/></span>
+                                                            <span><BsPlusLg color="blue" /></span>
                                                         </div>
                                                         <div onClick={() => screnDelete(e.id, elem.screenId)}>
-                                                            <span><BiMinus color="blue"/></span>
+                                                            <span><BiMinus color="blue" /></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 {
-                                                    elem.seat.length === 0 && <div className="flex my-3 cursor-pointer"
+                                                    elem.seat.length === 0 && <div className="flex my-3 cursor-pointer ml-3"
                                                         onClick={() => addSeat(e.id, elem.screenId)}>
                                                         <span className="relative addText"> Add Seat </span> <span><BsPlusLg /></span>
                                                     </div>
                                                 }
                                                 {
-                                                   elem.seat.length !== 0 && elem.seat.map((seat, seatIndex) => {
+                                                    elem.seat.length !== 0 && elem.seat.map((seat, seatIndex) => {
                                                         return <div key={seatIndex}>
                                                             <div className="flex justify-between ml-8">
                                                                 <div>
                                                                     <input className="shadow appearance-none border mb-3 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="seat Name"
-                                                                        
+                                                                    name="name"
+                                                                    value={seat.name}
+                                                                    // onChange={(event)=>seatChange(event,e.id,elem.screenId, seat.seatId)}
+                                                                    onChange={(event)=> inputChange(event, e.id, 'seat', elem.screenId, seat.seatId)}
                                                                     />
-                                                                    <input className="shadow appearance-none border mb-3 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Price"
-                                                                        
+                                                                    <input className="shadow appearance-none border mb-3 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" placeholder="Price"
+                                                                    name="price"
+                                                                    value={seat.price}
+                                                                    // onChange={(event)=>seatChange(event,e.id,elem.screenId, seat.seatId)}
+                                                                    onChange={(event)=> inputChange(event, e.id, 'seat', elem.screenId, seat.seatId)}
                                                                     />
                                                                 </div>
                                                                 <div className="flex gap-5 cursor-pointer">
                                                                     <div onClick={() => addSeat(e.id, elem.screenId)}>
-                                                                        <span><BsPlusLg color="red"/></span>
+                                                                        <span><BsPlusLg color="red" /></span>
                                                                     </div>
                                                                     <div onClick={() => deleteSeat(e.id, elem.screenId, seat.seatId)}>
-                                                                        <span><BiMinus color="red"/></span>
+                                                                        <span><BiMinus color="red" /></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -181,7 +238,7 @@ const Multiplex = () => {
 
                 </div>
                 <div className="text-center my-3">
-                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button" onClick={addAll}>
                         Add All
                     </button>
                 </div>
