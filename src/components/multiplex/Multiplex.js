@@ -5,6 +5,7 @@ import { BiMinus } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 
 const Multiplex = () => {
+    const [err, setErr] = useState('')
     const template = {
         name: '',
         screen: [],
@@ -129,7 +130,34 @@ const Multiplex = () => {
     }
 
     const addAll = () => {
-        console.log(multiplexValue);
+        // console.log(multiplexValue);
+        let val = '';
+        multiplexValue.forEach((e)=>{
+            if(e.name === ''){
+                return val = 'name cant be empty';
+            }
+            if(e.screen){
+                e.screen.forEach(screen => {
+                    if(screen.screen === ''){
+                        return val = 'screen cant be blank';
+                    }
+                     if(screen.seat){
+                         screen.seat.forEach(seat=>{
+                             if(seat.name === '' || seat.price === ''){
+                                 return val = 'seat feild cant be blank';
+                             }
+                         });
+                     }
+                });
+            }
+        });
+        if(val !== ''){
+            setErr(val)
+        }
+        if(val === ''){
+            setErr('')
+            localStorage.setItem('multiplex', JSON.stringify(multiplexValue))
+        }
     };
 
     return (
@@ -142,6 +170,9 @@ const Multiplex = () => {
                     </button>
                 </Link>
             </div>
+            <p className="my-3 text-center">
+                {err}
+            </p>
             <div className="container">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {

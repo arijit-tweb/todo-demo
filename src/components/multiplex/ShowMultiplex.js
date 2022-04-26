@@ -24,21 +24,28 @@ const ShowMultiplex = () => {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
 
-                    {/* {
+                    {
                         value.length !== 0 && value.map((e, i) => {
                             return <div className="w-full max-w-xs m-auto py-4" key={i}>
                                 <p>Multiplex Name : {e.name}</p>
                                 {
-                                    e.screen.map((elem, index) => {
-                                        return <div className="flex gap-3" key={index}>
-                                            <p>Screen : {elem.screen}</p> |
-                                            <p>Seat Type: {elem.seat}</p>
+                                  e.screen.length!== 0 &&  e.screen.map((screen, index)=>{
+                                        return <div key={index}>
+                                            <p>screen Name : {screen.screen}</p>
+                                            {
+                                                screen.seat && screen.seat.length !== 0 && screen.seat.map((seat, seatIndex)=>{
+                                                    return <div key={seatIndex}>
+                                                            <p>seat Name : {seat.name}</p>
+                                                            <p>seat Price : {seat.price}</p>
+                                                        </div>
+                                                })
+                                            }
                                         </div>
                                     })
                                 }
                             </div>
                         })
-                    } */}
+                    }
                 </div>
             </div>
         </>
